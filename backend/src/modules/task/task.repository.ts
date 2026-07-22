@@ -23,6 +23,7 @@ export const findTaskById = async (
     where: {
       id,
       userId,
+      deletedAt: null,
     },
   });
 };
@@ -45,5 +46,21 @@ export const updateTask = async (
       userId,
     },
     data,
+  });
+};
+
+export const deleteTask = async (
+  id: string,
+  userId: string,
+): Promise<TaskModel> => {
+  const prisma = getPrisma();
+  return prisma.task.update({
+    where: {
+      id,
+      userId,
+    },
+    data: {
+      deletedAt: new Date(),
+    },
   });
 };

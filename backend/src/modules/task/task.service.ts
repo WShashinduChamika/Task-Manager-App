@@ -39,3 +39,14 @@ export const updateTask = async (
   }
   return repository.updateTask(id, userId, dto);
 };
+
+export const deleteTask = async (
+  userId: string,
+  id: string,
+): Promise<TaskModel> => {
+  const existingTask = await repository.findTaskById(id, userId);
+  if (!existingTask) {
+    throw notFound("Task not found");
+  }
+  return repository.deleteTask(id, userId);
+};
