@@ -2,7 +2,7 @@ import type { TaskPriority, TaskStatus } from "../../../generated/prisma/enums";
 import type { TaskModel } from "../../../generated/prisma/models/Task";
 import { getPrisma } from "../../core/database/prisma";
 
-export const create = async (data: {
+export const createTask = async (data: {
   title: string;
   description?: string;
   priority: TaskPriority;
@@ -12,4 +12,17 @@ export const create = async (data: {
 }): Promise<TaskModel> => {
   const prisma = getPrisma();
   return prisma.task.create({ data });
+};
+
+export const findTaskById = async (
+  id: string,
+  userId: string,
+): Promise<TaskModel | null> => {
+  const prisma = getPrisma();
+  return prisma.task.findFirst({
+    where: {
+      id,
+      userId,
+    },
+  });
 };
