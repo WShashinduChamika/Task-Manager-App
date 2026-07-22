@@ -1,6 +1,6 @@
 import type { TaskModel } from "../../../generated/prisma/models/Task";
 import { notFound } from "../../core/exceptions";
-import type { CreateTaskDto } from "./dto";
+import type { CreateTaskDto, UpdateTaskDto } from "./dto";
 import * as repository from "./task.repository";
 
 export const createTask = async (
@@ -26,4 +26,16 @@ export const getTaskById = async (
     throw notFound("Task not found");
   }
   return task;
+};
+
+export const updateTask = async (
+  userId: string,
+  id: string,
+  dto: UpdateTaskDto,
+): Promise<TaskModel> => {
+  const existingTask = await repository.findTaskById(id, userId);
+  if (!existingTask) {
+    throw notFound("Task not found");
+  }
+  return repository.updateTask(id, userId, dto);
 };

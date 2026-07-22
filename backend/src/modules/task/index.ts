@@ -8,5 +8,6 @@ router.use(authMiddleware);
 
 router.post("/", controller.createTask);
 router.get("/:id", controller.getTaskById);
+router.put("/:id", controller.updateTask);
 
 export default router;

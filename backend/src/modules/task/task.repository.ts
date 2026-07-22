@@ -26,3 +26,24 @@ export const findTaskById = async (
     },
   });
 };
+
+export const updateTask = async (
+  id: string,
+  userId: string,
+  data: Partial<{
+    title: string;
+    description?: string;
+    priority: TaskPriority;
+    status: TaskStatus;
+    dueDate: Date;
+  }>,
+): Promise<TaskModel> => {
+  const prisma = getPrisma();
+  return prisma.task.update({
+    where: {
+      id,
+      userId,
+    },
+    data,
+  });
+};
