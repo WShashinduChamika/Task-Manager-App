@@ -5,6 +5,8 @@ import express, {
   type Response,
 } from "express";
 import helmet from "helmet";
+import { errorHandler } from "../core/middleware/error-handler";
+import apiRouter from "../routes";
 
 const app = express();
 
@@ -16,4 +18,9 @@ app.get("/health", (_req: Request, res: Response): void => {
   res.status(200).json({ success: true, data: { status: "ok" } });
 });
 
+app.use("/api/v1", apiRouter);
+
+app.use(errorHandler);
+
 export default app;
+
