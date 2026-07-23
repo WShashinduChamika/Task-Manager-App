@@ -30,6 +30,55 @@
 
 /* ─── Light Mode Design Tokens ───────────────────────────────────────────── */
 :root {
+  --background: hsl(220 30% 97%);
+  --foreground: hsl(224 71% 10%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(224 71% 10%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(224 71% 10%);
+  --primary: hsl(252 87% 62%);
+  --primary-foreground: hsl(0 0% 100%);
+  --secondary: hsl(210 40% 93%);
+  --secondary-foreground: hsl(224 71% 10%);
+  --muted: hsl(210 40% 94%);
+  --muted-foreground: hsl(215 16% 45%);
+  --accent: hsl(252 87% 62%);
+  --accent-foreground: hsl(0 0% 100%);
+  --destructive: hsl(0 63% 55%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(214 32% 88%);
+  --input: hsl(214 32% 88%);
+  --ring: hsl(252 87% 62%);
+  --radius: 0.75rem;
+
+  /* Auth-specific */
+  --auth-bg-from: hsl(220 30% 96%);
+  --auth-bg-to: hsl(230 40% 90%);
+  --auth-blob-a: hsl(252 87% 65% / 0.18);
+  --auth-blob-b: hsl(195 100% 50% / 0.1);
+  --auth-card-bg: hsl(0 0% 100% / 0.95);
+  --auth-card-border: hsl(214 32% 85%);
+  --auth-input-bg: hsl(210 40% 97%);
+  --auth-input-border: hsl(214 32% 85%);
+  --auth-input-focus: hsl(252 87% 62%);
+  --auth-gradient: linear-gradient(135deg, hsl(252 87% 62%), hsl(196 100% 50%));
+
+  /* Component tokens */
+  --header-bg: hsl(0 0% 100% / 0.85);
+  --section-bg: hsl(0 0% 100% / 0.85);
+  --stat-card-bg: hsl(0 0% 100% / 0.9);
+  --task-row-bg: hsl(210 40% 97%);
+  --task-row-hover: hsl(210 40% 93%);
+  --control-input-bg: hsl(210 40% 96%);
+  --tab-container-bg: hsl(210 40% 93%);
+  --tab-hover-bg: hsl(210 40% 88%);
+  --tab-active-bg: hsl(0 0% 100%);
+  --tab-active-color: hsl(224 71% 10%);
+  --modal-bg: hsl(0 0% 100% / 0.98);
+}
+
+/* ─── Dark Mode Design Tokens ────────────────────────────────────────────── */
+.dark {
   --background: hsl(224 71% 4%);
   --foreground: hsl(213 31% 91%);
   --card: hsl(224 71% 4%);
@@ -49,7 +98,6 @@
   --border: hsl(216 34% 17%);
   --input: hsl(216 34% 17%);
   --ring: hsl(252 87% 67%);
-  --radius: 0.75rem;
 
   /* Auth-specific */
   --auth-bg-from: hsl(224 71% 4%);
@@ -62,7 +110,21 @@
   --auth-input-border: hsl(216 34% 20%);
   --auth-input-focus: hsl(252 87% 67%);
   --auth-gradient: linear-gradient(135deg, hsl(252 87% 60%), hsl(196 100% 55%));
+
+  /* Component tokens */
+  --header-bg: hsl(224 50% 6% / 0.8);
+  --section-bg: hsl(224 50% 6% / 0.6);
+  --stat-card-bg: hsl(224 50% 7% / 0.8);
+  --task-row-bg: hsl(222 47% 8%);
+  --task-row-hover: hsl(222 47% 12%);
+  --control-input-bg: hsl(222 47% 9%);
+  --tab-container-bg: hsl(222 47% 8%);
+  --tab-hover-bg: hsl(222 47% 13%);
+  --tab-active-bg: hsl(222 47% 14%);
+  --tab-active-color: var(--foreground);
+  --modal-bg: hsl(224 50% 7% / 0.95);
 }
+
 
 /* ─── Base Reset ──────────────────────────────────────────────────────────── */
 @layer base {
@@ -347,6 +409,7 @@
 /* ─── Dashboard Layout ────────────────────────────────────────────────────── */
 @layer components {
 
+
   .dashboard-layout {
     min-height: 100vh;
     background:
@@ -370,12 +433,13 @@
     padding: 0 1.75rem;
     height: 3.75rem;
     border-bottom: 1px solid var(--border);
-    background: hsl(224 71% 4% / 0.85);
+    background: var(--header-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     position: sticky;
     top: 0;
     z-index: 50;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
   }
 
   .dashboard-brand {
@@ -391,16 +455,16 @@
     width: 2rem;
     height: 2rem;
     border-radius: 0.5rem;
-    background: linear-gradient(135deg, hsl(252 87% 60% / 0.25), hsl(196 100% 55% / 0.15));
-    border: 1px solid hsl(252 87% 67% / 0.25);
-    color: hsl(252 87% 70%);
+    background: linear-gradient(135deg, hsl(252 87% 65%), hsl(196 100% 50%));
+    color: #ffffff;
+    box-shadow: 0 2px 10px hsl(252 87% 60% / 0.3);
   }
 
   .dashboard-brand-name {
     font-size: 1.05rem;
     font-weight: 700;
     letter-spacing: -0.02em;
-    background: linear-gradient(135deg, hsl(252 87% 75%), hsl(196 100% 65%));
+    background: linear-gradient(135deg, hsl(252 87% 65%), hsl(196 100% 50%));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -409,7 +473,28 @@
   .dashboard-header-right {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
+  }
+
+  .theme-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.125rem;
+    height: 2.125rem;
+    border-radius: 0.5rem;
+    color: var(--muted-foreground);
+    background: var(--secondary);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  }
+
+  .theme-toggle-btn:hover {
+    color: var(--foreground);
+    background: var(--muted);
+    border-color: var(--ring);
+    transform: scale(1.05);
   }
 
   .dashboard-greeting {
@@ -431,16 +516,16 @@
     font-size: 0.8125rem;
     font-weight: 500;
     color: var(--muted-foreground);
-    background: hsl(222 47% 11%);
+    background: var(--secondary);
     border: 1px solid var(--border);
     cursor: pointer;
     transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
   }
 
   .dashboard-logout-btn:hover {
-    color: hsl(0 63% 70%);
-    background: hsl(0 30% 10%);
-    border-color: hsl(0 50% 25%);
+    color: hsl(0 63% 65%);
+    background: hsl(0 63% 50% / 0.12);
+    border-color: hsl(0 63% 50% / 0.3);
   }
 
   .dashboard-main {
@@ -488,11 +573,11 @@
     padding: 1.25rem;
     border-radius: 1rem;
     border: 1px solid var(--border);
-    background: hsl(224 50% 7% / 0.8);
+    background: var(--stat-card-bg);
     backdrop-filter: blur(10px);
     overflow: hidden;
     animation: stat-enter 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
   }
 
   .stat-card:hover { transform: translateY(-2px); }
@@ -538,33 +623,33 @@
   }
 
   .stat-card--total { box-shadow: 0 0 0 1px hsl(252 87% 67% / 0.12); }
-  .stat-card--total .stat-card-icon { background: hsl(252 87% 67% / 0.15); color: hsl(252 87% 70%); border: 1px solid hsl(252 87% 67% / 0.25); }
+  .stat-card--total .stat-card-icon { background: hsl(252 87% 67% / 0.15); color: hsl(252 87% 65%); border: 1px solid hsl(252 87% 67% / 0.25); }
   .stat-card--total .stat-card-glow { background: hsl(252 87% 60%); }
   .stat-card--total:hover { box-shadow: 0 6px 28px hsl(252 87% 60% / 0.15); }
 
   .stat-card--pending { box-shadow: 0 0 0 1px hsl(38 95% 60% / 0.12); }
-  .stat-card--pending .stat-card-icon { background: hsl(38 95% 60% / 0.12); color: hsl(38 95% 65%); border: 1px solid hsl(38 95% 60% / 0.25); }
+  .stat-card--pending .stat-card-icon { background: hsl(38 95% 60% / 0.12); color: hsl(38 95% 55%); border: 1px solid hsl(38 95% 60% / 0.25); }
   .stat-card--pending .stat-card-glow { background: hsl(38 95% 55%); }
   .stat-card--pending:hover { box-shadow: 0 6px 28px hsl(38 95% 55% / 0.15); }
 
   .stat-card--inprogress { box-shadow: 0 0 0 1px hsl(196 100% 50% / 0.12); }
-  .stat-card--inprogress .stat-card-icon { background: hsl(196 100% 50% / 0.12); color: hsl(196 100% 60%); border: 1px solid hsl(196 100% 50% / 0.25); }
+  .stat-card--inprogress .stat-card-icon { background: hsl(196 100% 50% / 0.12); color: hsl(196 100% 50%); border: 1px solid hsl(196 100% 50% / 0.25); }
   .stat-card--inprogress .stat-card-glow { background: hsl(196 100% 50%); }
   .stat-card--inprogress:hover { box-shadow: 0 6px 28px hsl(196 100% 50% / 0.15); }
 
   .stat-card--completed { box-shadow: 0 0 0 1px hsl(142 70% 45% / 0.12); }
-  .stat-card--completed .stat-card-icon { background: hsl(142 70% 45% / 0.12); color: hsl(142 70% 55%); border: 1px solid hsl(142 70% 45% / 0.25); }
+  .stat-card--completed .stat-card-icon { background: hsl(142 70% 45% / 0.12); color: hsl(142 70% 45%); border: 1px solid hsl(142 70% 45% / 0.25); }
   .stat-card--completed .stat-card-glow { background: hsl(142 70% 45%); }
   .stat-card--completed:hover { box-shadow: 0 6px 28px hsl(142 70% 45% / 0.15); }
 
   .stat-card--overdue { box-shadow: 0 0 0 1px hsl(0 63% 60% / 0.12); }
-  .stat-card--overdue .stat-card-icon { background: hsl(0 63% 60% / 0.12); color: hsl(0 63% 70%); border: 1px solid hsl(0 63% 60% / 0.25); }
+  .stat-card--overdue .stat-card-icon { background: hsl(0 63% 60% / 0.12); color: hsl(0 63% 60%); border: 1px solid hsl(0 63% 60% / 0.25); }
   .stat-card--overdue .stat-card-glow { background: hsl(0 63% 55%); }
   .stat-card--overdue:hover { box-shadow: 0 6px 28px hsl(0 63% 55% / 0.15); }
 
   .stat-card--skeleton {
     height: 5.5rem;
-    background: hsl(222 47% 9%);
+    background: var(--muted);
     animation: skeleton-pulse 1.5s ease-in-out infinite;
   }
 
@@ -580,11 +665,12 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    background: hsl(224 50% 6% / 0.6);
+    background: var(--section-bg);
     border: 1px solid var(--border);
     border-radius: 1rem;
     padding: 1.5rem;
     backdrop-filter: blur(10px);
+    transition: background-color 0.2s ease, border-color 0.2s ease;
   }
 
   .tasks-section-header { display: flex; align-items: center; gap: 0.75rem; }
@@ -602,7 +688,7 @@
     padding: 0.15rem 0.6rem;
     border-radius: 9999px;
     background: hsl(252 87% 67% / 0.15);
-    color: hsl(252 87% 72%);
+    color: hsl(252 87% 65%);
     border: 1px solid hsl(252 87% 67% / 0.2);
     letter-spacing: 0.01em;
   }
@@ -618,7 +704,7 @@
   .tasks-filter-tabs {
     display: flex;
     gap: 0.25rem;
-    background: hsl(222 47% 8%);
+    background: var(--tab-container-bg);
     border: 1px solid var(--border);
     border-radius: 0.625rem;
     padding: 0.25rem;
@@ -637,8 +723,8 @@
     white-space: nowrap;
   }
 
-  .tasks-tab:hover:not(.tasks-tab--active) { color: var(--foreground); background: hsl(222 47% 13%); }
-  .tasks-tab--active { color: var(--foreground); background: hsl(222 47% 14%); box-shadow: 0 1px 4px hsl(0 0% 0% / 0.3); }
+  .tasks-tab:hover:not(.tasks-tab--active) { color: var(--foreground); background: var(--tab-hover-bg); }
+  .tasks-tab--active { color: var(--tab-active-color); background: var(--tab-active-bg); box-shadow: 0 1px 4px hsl(0 0% 0% / 0.1); }
 
   .tasks-search-wrapper { position: relative; display: flex; align-items: center; }
 
@@ -654,11 +740,11 @@
     padding: 0.4rem 0.875rem 0.4rem 2.1rem;
     border-radius: 0.5rem;
     border: 1px solid var(--border);
-    background: hsl(222 47% 9%);
+    background: var(--control-input-bg);
     color: var(--foreground);
     font-size: 0.8125rem;
     outline: none;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease;
   }
 
   .tasks-search-input::placeholder { color: var(--muted-foreground); opacity: 0.6; }
@@ -688,22 +774,28 @@
     padding: 0.4rem 2rem 0.4rem 2.1rem;
     border-radius: 0.5rem;
     border: 1px solid var(--border);
-    background: hsl(222 47% 9%);
+    background-color: var(--control-input-bg);
     color: var(--foreground);
     font-size: 0.8125rem;
     outline: none;
     cursor: pointer;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.2s ease;
     appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238892b0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 0.75rem center;
   }
 
+  .tasks-sort-select option {
+    background-color: var(--card);
+    color: var(--foreground);
+  }
+
   .tasks-sort-select:focus {
     border-color: var(--ring);
     box-shadow: 0 0 0 3px hsl(252 87% 67% / 0.15);
   }
+
 
 
   .tasks-list { display: flex; flex-direction: column; gap: 0.5rem; }
@@ -714,9 +806,9 @@
     gap: 1rem;
     padding: 0.875rem 1rem;
     border-radius: 0.625rem;
-    background: hsl(222 47% 8%);
+    background: var(--task-row-bg);
     border: 1px solid var(--border);
-    transition: background 0.15s ease, border-color 0.15s ease;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
     animation: task-row-enter 0.3s ease both;
   }
 
@@ -725,10 +817,11 @@
     to   { opacity: 1; transform: translateX(0); }
   }
 
-  .task-row:hover { background: hsl(222 47% 11%); border-color: hsl(216 34% 22%); }
-  .task-row--overdue { border-color: hsl(0 63% 40% / 0.4); background: hsl(0 30% 8%); }
-  .task-row--overdue:hover { background: hsl(0 30% 10%); border-color: hsl(0 63% 45% / 0.5); }
-  .task-row--skeleton { height: 3.5rem; background: hsl(222 47% 9%); animation: skeleton-pulse 1.5s ease-in-out infinite; }
+  .task-row:hover { background: var(--task-row-hover); border-color: var(--ring); }
+  .task-row--overdue { border-color: hsl(0 63% 50% / 0.3); background: hsl(0 63% 50% / 0.06); }
+  .task-row--overdue:hover { background: hsl(0 63% 50% / 0.1); border-color: hsl(0 63% 50% / 0.5); }
+  .task-row--skeleton { height: 3.5rem; background: var(--muted); animation: skeleton-pulse 1.5s ease-in-out infinite; }
+
 
   .task-priority-bar { width: 0.2rem; height: 2.25rem; border-radius: 9999px; flex-shrink: 0; }
   .task-priority-bar--low    { background: hsl(142 70% 50%); }

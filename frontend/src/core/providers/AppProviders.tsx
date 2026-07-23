@@ -1,11 +1,13 @@
-import { useState } from "react"; // Documented exception: single QueryClient lifecycle
+import { useState, useEffect } from "react"; // Documented exception: single QueryClient lifecycle
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 import { AppRouter } from "@router/index";
 import { hydrateAuthAction } from "@modules/auth/store/auth.actions";
+import { applyThemeToDocument, getInitialTheme } from "@core/hooks/useTheme";
 
-// Hydrate auth from localStorage on app bootstrap
+// Hydrate auth and theme from localStorage on app bootstrap
 hydrateAuthAction();
+applyThemeToDocument(getInitialTheme());
 
 export const AppProviders = () => {
   const [queryClient] = useState(
@@ -21,11 +23,16 @@ export const AppProviders = () => {
       })
   );
 
+  useEffect(() => {
+    applyThemeToDocument(getInitialTheme());
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster position="top-right" richColors theme="dark" />
+      <Toaster position="top-right" richColors />
       <AppRouter />
     </QueryClientProvider>
   );
 };
+
 
