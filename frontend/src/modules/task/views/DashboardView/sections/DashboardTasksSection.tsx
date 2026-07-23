@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Search, AlertCircle, ArrowUpDown, Plus, Pencil } from "lucide-react";
+import { Search, AlertCircle, ArrowUpDown, Plus, Pencil, Trash2 } from "lucide-react";
 import { useTasks } from "../../../hooks/useTasks";
 import { CreateTaskModal } from "../components/CreateTaskModal";
 import { EditTaskModal } from "../components/EditTaskModal";
+import { DeleteConfirmModal } from "../components/DeleteConfirmModal";
 import type { Task, TaskStatus } from "../../../types";
 
 type FilterTab = "ALL" | TaskStatus;
@@ -80,6 +81,7 @@ export const DashboardTasksSection = () => {
   const [sortOption, setSortOption] = useState<SortOption>("NEWEST");
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const [deletingTask, setDeletingTask] = useState<Task | null>(null);
 
   const sortParams = getSortParams(sortOption);
   const { tasks, isLoading, isError } = useTasks({
@@ -125,6 +127,12 @@ export const DashboardTasksSection = () => {
         task={editingTask}
         isOpen={!!editingTask}
         onClose={() => setEditingTask(null)}
+      />
+
+      <DeleteConfirmModal
+        task={deletingTask}
+        isOpen={!!deletingTask}
+        onClose={() => setDeletingTask(null)}
       />
 
       <div className="tasks-controls">
@@ -259,6 +267,15 @@ export const DashboardTasksSection = () => {
                   >
                     <Pencil size={15} />
                   </button>
+                  <button
+                    type="button"
+                    className="task-action-btn task-action-btn--danger"
+                    onClick={() => setDeletingTask(task)}
+                    title="Delete task"
+                    aria-label={`Delete task: ${task.title}`}
+                  >
+                    <Trash2 size={15} />
+                  </button>
                 </div>
               </div>
             );
@@ -268,4 +285,5 @@ export const DashboardTasksSection = () => {
     </section>
   );
 };
+
 

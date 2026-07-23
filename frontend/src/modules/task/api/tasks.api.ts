@@ -41,5 +41,13 @@ export const updateTaskApi = async (
   return unwrapApiResponse(response);
 };
 
+export const deleteTaskApi = async (id: string): Promise<void> => {
+  const response = await api.delete<ApiResponse<{ message: string }>>(
+    `/tasks/${id}`,
+  );
+  unwrapApiResponse(response);
+};
+
+
 
 

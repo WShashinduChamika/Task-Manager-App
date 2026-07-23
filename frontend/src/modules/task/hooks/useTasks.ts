@@ -4,6 +4,7 @@ import {
   getTaskStatsApi,
   createTaskApi,
   updateTaskApi,
+  deleteTaskApi,
 } from "../api/tasks.api";
 import type { CreateTaskDto, GetTasksParams, UpdateTaskDto } from "../types";
 
@@ -53,6 +54,18 @@ export const useUpdateTask = () => {
     },
   });
 };
+
+export const useDeleteTask = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => deleteTaskApi(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+  });
+};
+
 
 
 
