@@ -1,4 +1,5 @@
 const AUTH_TOKEN_KEY = "task_app_auth_token";
+const REFRESH_TOKEN_KEY = "task_app_refresh_token";
 const AUTH_USER_KEY = "task_app_auth_user";
 
 export const getAuthToken = (): string | null => {
@@ -25,6 +26,46 @@ export const clearAuthToken = (): void => {
   }
 };
 
+export const getRefreshToken = (): string | null => {
+  try {
+    return localStorage.getItem(REFRESH_TOKEN_KEY);
+  } catch {
+    return null;
+  }
+};
+
+export const setRefreshToken = (token: string): void => {
+  try {
+    localStorage.setItem(REFRESH_TOKEN_KEY, token);
+  } catch (e) {
+    console.error("Failed to write refresh token to localStorage", e);
+  }
+};
+
+export const clearRefreshToken = (): void => {
+  try {
+    localStorage.removeItem(REFRESH_TOKEN_KEY);
+  } catch (e) {
+    console.error("Failed to clear refresh token from localStorage", e);
+  }
+};
+
+export const setAuthTokens = ({
+  accessToken,
+  refreshToken,
+}: {
+  accessToken: string;
+  refreshToken: string;
+}): void => {
+  setAuthToken(accessToken);
+  setRefreshToken(refreshToken);
+};
+
+export const clearAuthTokens = (): void => {
+  clearAuthToken();
+  clearRefreshToken();
+};
+
 export const getAuthUser = <T>(): T | null => {
   try {
     const raw = localStorage.getItem(AUTH_USER_KEY);
@@ -49,3 +90,4 @@ export const clearAuthUser = (): void => {
     console.error("Failed to clear auth user from localStorage", e);
   }
 };
+

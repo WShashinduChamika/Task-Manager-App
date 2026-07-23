@@ -8,10 +8,12 @@ import {
 import { globalAuthUserStore } from "@store/auth.store";
 import { loginApi } from "../api/login.api";
 import { registerApi } from "../api/register.api";
+import { logoutApi } from "../api/logout.api";
 import {
-  setAuthToken,
+  setAuthTokens,
   setAuthUser,
-  clearAuthToken,
+  getRefreshToken,
+  clearAuthTokens,
   clearAuthUser,
 } from "@core/storage/auth.storage";
 import type { LoginDto, RegisterDto } from "../types";
@@ -21,9 +23,9 @@ export const loginAction = async (dto: LoginDto): Promise<boolean> => {
   authErrorStore.value = null;
 
   try {
-    const { accessToken, user } = await loginApi(dto);
+    const { accessToken, refreshToken, user } = await loginApi(dto);
 
-    setAuthToken(accessToken);
+    setAuthTokens({ accessToken, refreshToken });
     setAuthUser(user);
 
     globalAuthUserStore.value = user;
@@ -48,13 +50,13 @@ export const registerAction = async (dto: RegisterDto): Promise<boolean> => {
   authSuccessMessageStore.value = null;
 
   try {
-    const { accessToken, user } = await registerApi({
+    const { accessToken, refreshToken, user } = await registerApi({
       name: dto.name,
       email: dto.email,
       password: dto.password,
     });
 
-    setAuthToken(accessToken);
+    setAuthTokens({ accessToken, refreshToken });
     setAuthUser(user);
 
     globalAuthUserStore.value = user;
@@ -74,11 +76,16 @@ export const registerAction = async (dto: RegisterDto): Promise<boolean> => {
 };
 
 export const logoutAction = (): void => {
-  clearAuthToken();
+  const refreshToken = getRefreshToken();
+  if (refreshToken) {
+    logoutApi(refreshToken);
+  }
+  clearAuthTokens();
   clearAuthUser();
   globalAuthUserStore.value = null;
   toast.info("Logged out successfully.");
 };
+
 
 
 export const hydrateAuthAction = (): void => {
