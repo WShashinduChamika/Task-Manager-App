@@ -6,7 +6,9 @@ export interface JwtPayload {
 }
 
 const getJwtSecret = (): string => {
-  return process.env.JWT_SECRET || "default_jwt_secret_key_change_in_production";
+  return (
+    process.env.JWT_SECRET || "default_jwt_secret_key_change_in_production"
+  );
 };
 
 const getRefreshSecret = (): string => {
@@ -40,4 +42,3 @@ export const generateRefreshToken = (payload: JwtPayload): string => {
 export const verifyRefreshToken = (token: string): JwtPayload => {
   return jwt.verify(token, getRefreshSecret()) as JwtPayload;
 };
-
