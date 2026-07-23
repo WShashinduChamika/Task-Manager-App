@@ -132,3 +132,45 @@ export const deleteTask = async (
     },
   });
 };
+
+export interface TaskStatsResult {
+  total: number;
+  pending: number;
+  inProgress: number;
+  completed: number;
+  overdue: number;
+}
+
+export const getTaskStats = async (
+  userId: string,
+): Promise<TaskStatsResult> => {
+  const prisma = getPrisma();
+  const now = new Date();
+  const baseWhere = {
+    userId,
+    deletedAt: null,
+  };
+
+  const [total, pending, inProgress, completed, overdue] = await Promise.all([
+    prisma.task.count({ where: baseWhere }),
+    prisma.task.count({ where: { ...baseWhere, status: "PENDING" } }),
+    prisma.task.count({ where: { ...baseWhere, status: "IN_PROGRESS" } }),
+    prisma.task.count({ where: { ...baseWhere, status: "COMPLETED" } }),
+    prisma.task.count({
+      where: {
+        ...baseWhere,
+        status: { not: "COMPLETED" },
+        dueDate: { lt: now },
+      },
+    }),
+  ]);
+
+  return {
+    total,
+    pending,
+    inProgress,
+    completed,
+    overdue,
+  };
+};
+
