@@ -2,7 +2,6 @@
 node_modules/
 
 # -- Environment Variables -----------------------------------------------------
-# Keep environment variables out of version control
 .env
 .env.*
 !.env.example
@@ -37,4 +36,9 @@ Thumbs.db
 *.sw?
 
 # -- Tool / Agent Configs ------------------------------------------------------
-/.agents/
+backend/.agents/
+backend/.claude/
+backend/.windsurf/
+
+# -- Prisma Generated ----------------------------------------------------------
+backend/generated/

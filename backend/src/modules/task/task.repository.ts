@@ -14,6 +14,74 @@ export const createTask = async (data: {
   return prisma.task.create({ data });
 };
 
+export interface FindTasksFilters {
+  page?: number;
+  limit?: number;
+  search?: string;
+  status?: TaskStatus;
+  priority?: TaskPriority;
+  sortBy?: "createdAt" | "dueDate";
+  sortOrder?: "asc" | "desc";
+}
+
+export interface FindTasksResult {
+  tasks: TaskModel[];
+  total: number;
+}
+
+export const findTasks = async (
+  userId: string,
+  filters: FindTasksFilters,
+): Promise<FindTasksResult> => {
+  const prisma = getPrisma();
+  const where: {
+    userId: string;
+    deletedAt: null;
+    status?: TaskStatus;
+    priority?: TaskPriority;
+    title?: {
+      contains: string;
+      mode: "insensitive";
+    };
+  } = {
+    userId,
+    deletedAt: null,
+  };
+
+  if (filters.status) {
+    where.status = filters.status;
+  }
+  if (filters.priority) {
+    where.priority = filters.priority;
+  }
+  if (filters.search) {
+    where.title = {
+      contains: filters.search,
+      mode: "insensitive",
+    };
+  }
+
+  const page = filters.page || 1;
+  const limit = filters.limit || 10;
+  const skip = (page - 1) * limit;
+
+  const orderBy = {
+    [filters.sortBy || "createdAt"]: filters.sortOrder || "desc",
+  };
+
+  const [tasks, total] = await Promise.all([
+    prisma.task.findMany({
+      where,
+      orderBy,
+      skip,
+      take: limit,
+    }),
+    prisma.task.count({ where }),
+  ]);
+
+  return { tasks, total };
+};
+
 export const findTaskById = async (
   id: string,
   userId: string,

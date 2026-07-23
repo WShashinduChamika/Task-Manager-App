@@ -1,7 +1,18 @@
 import type { TaskModel } from "../../../generated/prisma/models/Task";
 import { notFound } from "../../core/exceptions";
 import type { CreateTaskDto, UpdateTaskDto } from "./dto";
+import type { GetTasksQuerySchemaType } from "./schemas/task.schema";
 import * as repository from "./task.repository";
+
+export interface PaginatedTasksResponse {
+  tasks: TaskModel[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+}
 
 export const createTask = async (
   userId: string,
@@ -15,6 +26,26 @@ export const createTask = async (
     dueDate: dto.dueDate,
     userId,
   });
+};
+
+export const getTasks = async (
+  userId: string,
+  query: GetTasksQuerySchemaType,
+): Promise<PaginatedTasksResponse> => {
+  const page = query.page || 1;
+  const limit = query.limit || 10;
+  const { tasks, total } = await repository.findTasks(userId, query);
+  const totalPages = Math.ceil(total / limit);
+
+  return {
+    tasks,
+    meta: {
+      total,
+      page,
+      limit,
+      totalPages,
+    },
+  };
 };
 
 export const getTaskById = async (

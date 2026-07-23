@@ -1,7 +1,11 @@
 import type { NextFunction, Response } from "express";
 import { unauthorized } from "../../core/exceptions";
 import type { AuthenticatedRequest } from "../../core/middleware/auth.middleware";
-import { createTaskSchema, updateTaskSchema } from "./schemas/task.schema";
+import {
+  createTaskSchema,
+  getTasksQuerySchema,
+  updateTaskSchema,
+} from "./schemas/task.schema";
 import * as service from "./task.service";
 
 export const createTask = async (
@@ -16,6 +20,27 @@ export const createTask = async (
     const dto = createTaskSchema.parse(req.body);
     const result = await service.createTask(req.user.userId, dto);
     res.status(201).json({ success: true, data: result });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getTasks = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    if (!req.user) {
+      throw unauthorized("User not authenticated");
+    }
+    const query = getTasksQuerySchema.parse(req.query);
+    const result = await service.getTasks(req.user.userId, query);
+    res.status(200).json({
+      success: true,
+      data: result.tasks,
+      meta: result.meta,
+    });
   } catch (error) {
     next(error);
   }
