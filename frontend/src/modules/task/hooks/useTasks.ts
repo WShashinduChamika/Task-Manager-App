@@ -1,6 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getTasksApi, getTaskStatsApi, createTaskApi } from "../api/tasks.api";
-import type { CreateTaskDto, GetTasksParams } from "../types";
+import {
+  getTasksApi,
+  getTaskStatsApi,
+  createTaskApi,
+  updateTaskApi,
+} from "../api/tasks.api";
+import type { CreateTaskDto, GetTasksParams, UpdateTaskDto } from "../types";
 
 export const useTasks = (params: GetTasksParams = {}) => {
   const query = useQuery({
@@ -36,5 +41,18 @@ export const useCreateTask = () => {
     },
   });
 };
+
+export const useUpdateTask = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, dto }: { id: string; dto: UpdateTaskDto }) =>
+      updateTaskApi(id, dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+  });
+};
+
 
 

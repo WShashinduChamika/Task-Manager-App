@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Search, AlertCircle, ArrowUpDown, Plus } from "lucide-react";
+import { Search, AlertCircle, ArrowUpDown, Plus, Pencil } from "lucide-react";
 import { useTasks } from "../../../hooks/useTasks";
 import { CreateTaskModal } from "../components/CreateTaskModal";
+import { EditTaskModal } from "../components/EditTaskModal";
 import type { Task, TaskStatus } from "../../../types";
 
 type FilterTab = "ALL" | TaskStatus;
@@ -78,6 +79,7 @@ export const DashboardTasksSection = () => {
   const [search, setSearch] = useState("");
   const [sortOption, setSortOption] = useState<SortOption>("NEWEST");
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
 
   const sortParams = getSortParams(sortOption);
   const { tasks, isLoading, isError } = useTasks({
@@ -119,6 +121,11 @@ export const DashboardTasksSection = () => {
         onClose={() => setIsCreateModalOpen(false)}
       />
 
+      <EditTaskModal
+        task={editingTask}
+        isOpen={!!editingTask}
+        onClose={() => setEditingTask(null)}
+      />
 
       <div className="tasks-controls">
         <div className="tasks-filter-tabs" role="tablist" aria-label="Filter tasks by status">
@@ -241,6 +248,18 @@ export const DashboardTasksSection = () => {
                     {formatDate(task.dueDate)}
                   </span>
                 </div>
+
+                <div className="task-actions">
+                  <button
+                    type="button"
+                    className="task-action-btn"
+                    onClick={() => setEditingTask(task)}
+                    title="Edit task"
+                    aria-label={`Edit task: ${task.title}`}
+                  >
+                    <Pencil size={15} />
+                  </button>
+                </div>
               </div>
             );
           })}
@@ -249,3 +268,4 @@ export const DashboardTasksSection = () => {
     </section>
   );
 };
+
