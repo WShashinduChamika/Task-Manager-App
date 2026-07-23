@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"; // Documented exception: single QueryClient lifecycle
+import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "sonner";
 import { AppRouter } from "@router/index";
@@ -9,20 +9,17 @@ import { applyThemeToDocument, getInitialTheme } from "@core/hooks/useTheme";
 hydrateAuthAction();
 applyThemeToDocument(getInitialTheme());
 
-export const AppProviders = () => {
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            refetchOnWindowFocus: false,
-            retry: 1,
-            staleTime: 5 * 60 * 1000, // 5 min
-          },
-        },
-      })
-  );
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+      staleTime: 5 * 60 * 1000, // 5 min
+    },
+  },
+});
 
+export const AppProviders = () => {
   useEffect(() => {
     applyThemeToDocument(getInitialTheme());
   }, []);

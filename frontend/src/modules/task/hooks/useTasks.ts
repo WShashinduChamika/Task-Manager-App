@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { getApiErrorMessage } from "@core/api/response";
+import { currentUserIdStore } from "@store/auth.store";
 import {
   getTasksApi,
   getTaskStatsApi,
@@ -11,9 +12,12 @@ import {
 import type { CreateTaskDto, GetTasksParams, UpdateTaskDto } from "../types";
 
 export const useTasks = (params: GetTasksParams = {}) => {
+  const userId = currentUserIdStore.value;
+
   const query = useQuery({
-    queryKey: ["tasks", params],
+    queryKey: ["tasks", userId, params],
     queryFn: () => getTasksApi({ limit: 100, ...params }),
+    enabled: Boolean(userId),
   });
 
   const tasks = query.data?.tasks ?? [];
@@ -23,9 +27,12 @@ export const useTasks = (params: GetTasksParams = {}) => {
 };
 
 export const useTaskStats = () => {
+  const userId = currentUserIdStore.value;
+
   const query = useQuery({
-    queryKey: ["tasks", "stats"],
+    queryKey: ["tasks", userId, "stats"],
     queryFn: () => getTaskStatsApi(),
+    enabled: Boolean(userId),
   });
 
   return {
