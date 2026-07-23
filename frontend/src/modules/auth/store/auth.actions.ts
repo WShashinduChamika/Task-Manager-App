@@ -19,9 +19,9 @@ export const loginAction = async (dto: LoginDto): Promise<boolean> => {
   authErrorStore.value = null;
 
   try {
-    const { token, user } = await loginApi(dto);
+    const { accessToken, user } = await loginApi(dto);
 
-    setAuthToken(token);
+    setAuthToken(accessToken);
     setAuthUser(user);
 
     globalAuthUserStore.value = user;
@@ -43,13 +43,13 @@ export const registerAction = async (dto: RegisterDto): Promise<boolean> => {
   authSuccessMessageStore.value = null;
 
   try {
-    const { token, user } = await registerApi({
+    const { accessToken, user } = await registerApi({
       name: dto.name,
       email: dto.email,
       password: dto.password,
     });
 
-    setAuthToken(token);
+    setAuthToken(accessToken);
     setAuthUser(user);
 
     globalAuthUserStore.value = user;
