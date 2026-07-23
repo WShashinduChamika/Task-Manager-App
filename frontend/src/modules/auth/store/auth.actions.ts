@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+import { getApiErrorMessage } from "@core/api/response";
 import {
   authLoadingStore,
   authErrorStore,
@@ -25,12 +27,15 @@ export const loginAction = async (dto: LoginDto): Promise<boolean> => {
     setAuthUser(user);
 
     globalAuthUserStore.value = user;
+    toast.success(`Welcome back, ${user.name}!`);
     return true;
   } catch (err) {
-    authErrorStore.value =
-      err instanceof Error
-        ? err.message
-        : "Login failed. Please check your credentials.";
+    const errorMessage = getApiErrorMessage(
+      err,
+      "Login failed. Please check your credentials.",
+    );
+    authErrorStore.value = errorMessage;
+    toast.error(errorMessage);
     return false;
   } finally {
     authLoadingStore.value = false;
@@ -53,12 +58,15 @@ export const registerAction = async (dto: RegisterDto): Promise<boolean> => {
     setAuthUser(user);
 
     globalAuthUserStore.value = user;
+    toast.success(`Account created! Welcome, ${user.name}.`);
     return true;
   } catch (err) {
-    authErrorStore.value =
-      err instanceof Error
-        ? err.message
-        : "Registration failed. Please try again.";
+    const errorMessage = getApiErrorMessage(
+      err,
+      "Registration failed. Please try again.",
+    );
+    authErrorStore.value = errorMessage;
+    toast.error(errorMessage);
     return false;
   } finally {
     authLoadingStore.value = false;
@@ -69,7 +77,9 @@ export const logoutAction = (): void => {
   clearAuthToken();
   clearAuthUser();
   globalAuthUserStore.value = null;
+  toast.info("Logged out successfully.");
 };
+
 
 export const hydrateAuthAction = (): void => {
   try {

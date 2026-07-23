@@ -1,5 +1,6 @@
 import { useState } from "react"; // Documented exception: single QueryClient lifecycle
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "sonner";
 import { AppRouter } from "@router/index";
 import { hydrateAuthAction } from "@modules/auth/store/auth.actions";
 
@@ -22,7 +23,9 @@ export const AppProviders = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <Toaster position="top-right" richColors theme="dark" />
       <AppRouter />
     </QueryClientProvider>
   );
 };
+

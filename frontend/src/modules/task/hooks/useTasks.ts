@@ -1,4 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { getApiErrorMessage } from "@core/api/response";
 import {
   getTasksApi,
   getTaskStatsApi,
@@ -38,7 +40,11 @@ export const useCreateTask = () => {
   return useMutation({
     mutationFn: (dto: CreateTaskDto) => createTaskApi(dto),
     onSuccess: () => {
+      toast.success("Task created successfully!");
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+    onError: (err) => {
+      toast.error(getApiErrorMessage(err, "Failed to create task"));
     },
   });
 };
@@ -50,7 +56,11 @@ export const useUpdateTask = () => {
     mutationFn: ({ id, dto }: { id: string; dto: UpdateTaskDto }) =>
       updateTaskApi(id, dto),
     onSuccess: () => {
+      toast.success("Task updated successfully!");
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+    onError: (err) => {
+      toast.error(getApiErrorMessage(err, "Failed to update task"));
     },
   });
 };
@@ -61,10 +71,15 @@ export const useDeleteTask = () => {
   return useMutation({
     mutationFn: (id: string) => deleteTaskApi(id),
     onSuccess: () => {
+      toast.success("Task deleted successfully!");
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+    onError: (err) => {
+      toast.error(getApiErrorMessage(err, "Failed to delete task"));
     },
   });
 };
+
 
 
 
