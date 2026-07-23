@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Search, AlertCircle, ArrowUpDown } from "lucide-react";
+import { Search, AlertCircle, ArrowUpDown, Plus } from "lucide-react";
 import { useTasks } from "../../../hooks/useTasks";
+import { CreateTaskModal } from "../components/CreateTaskModal";
 import type { Task, TaskStatus } from "../../../types";
 
 type FilterTab = "ALL" | TaskStatus;
@@ -76,6 +77,7 @@ export const DashboardTasksSection = () => {
   const [activeTab, setActiveTab] = useState<FilterTab>("ALL");
   const [search, setSearch] = useState("");
   const [sortOption, setSortOption] = useState<SortOption>("NEWEST");
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const sortParams = getSortParams(sortOption);
   const { tasks, isLoading, isError } = useTasks({
@@ -97,9 +99,26 @@ export const DashboardTasksSection = () => {
   return (
     <section className="tasks-section" aria-label="Task list">
       <div className="tasks-section-header">
-        <h2 className="tasks-section-title">My Tasks</h2>
-        <span className="tasks-count-badge">{sortedAndFiltered.length} tasks</span>
+        <div className="tasks-section-title-group">
+          <h2 className="tasks-section-title">My Tasks</h2>
+          <span className="tasks-count-badge">{sortedAndFiltered.length} tasks</span>
+        </div>
+        <button
+          type="button"
+          id="create-task-open-btn"
+          className="btn btn--primary btn--sm"
+          onClick={() => setIsCreateModalOpen(true)}
+        >
+          <Plus size={16} />
+          <span>Create Task</span>
+        </button>
       </div>
+
+      <CreateTaskModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+      />
+
 
       <div className="tasks-controls">
         <div className="tasks-filter-tabs" role="tablist" aria-label="Filter tasks by status">

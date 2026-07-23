@@ -7,6 +7,7 @@ import type {
   Task,
   TaskMeta,
   TaskStats,
+  CreateTaskDto,
 } from "../types";
 
 type TasksEnvelope = { tasks: Task[]; meta: TaskMeta };
@@ -25,4 +26,10 @@ export const getTaskStatsApi = async (): Promise<TaskStats> => {
   const response = await api.get<ApiResponse<TaskStats>>("/tasks/stats");
   return unwrapApiResponse(response);
 };
+
+export const createTaskApi = async (dto: CreateTaskDto): Promise<Task> => {
+  const response = await api.post<ApiResponse<Task>>("/tasks", dto);
+  return unwrapApiResponse(response);
+};
+
 

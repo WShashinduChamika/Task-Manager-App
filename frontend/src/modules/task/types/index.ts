@@ -41,3 +41,12 @@ export interface TaskStats {
   completed: number;
   overdue: number;
 }
+
+export interface CreateTaskDto {
+  title: string;
+  description?: string;
+  priority: TaskPriority;
+  status?: TaskStatus;
+  dueDate: string;
+}
+

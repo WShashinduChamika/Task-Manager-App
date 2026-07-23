@@ -1,6 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import { getTasksApi, getTaskStatsApi } from "../api/tasks.api";
-import type { GetTasksParams } from "../types";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getTasksApi, getTaskStatsApi, createTaskApi } from "../api/tasks.api";
+import type { CreateTaskDto, GetTasksParams } from "../types";
 
 export const useTasks = (params: GetTasksParams = {}) => {
   const query = useQuery({
@@ -25,4 +25,16 @@ export const useTaskStats = () => {
     stats: query.data,
   };
 };
+
+export const useCreateTask = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (dto: CreateTaskDto) => createTaskApi(dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+  });
+};
+
 
