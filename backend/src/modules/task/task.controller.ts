@@ -102,3 +102,23 @@ export const deleteTask = async (
     next(error);
   }
 };
+
+export const getTaskStats = async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    if (!req.user) {
+      throw unauthorized("User not authenticated");
+    }
+    const stats = await service.getTaskStats(req.user.userId);
+    res.status(200).json({
+      success: true,
+      data: stats,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
