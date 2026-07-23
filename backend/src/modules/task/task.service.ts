@@ -81,3 +81,10 @@ export const deleteTask = async (
   }
   return repository.deleteTask(id, userId);
 };
+
+export const getTaskStats = async (
+  userId: string,
+): Promise<repository.TaskStatsResult> => {
+  return repository.getTaskStats(userId);
+};
+

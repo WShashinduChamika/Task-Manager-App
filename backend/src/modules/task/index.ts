@@ -8,8 +8,10 @@ router.use(authMiddleware);
 
 router.post("/", controller.createTask);
 router.get("/", controller.getTasks);
+router.get("/stats", controller.getTaskStats);
 router.get("/:id", controller.getTaskById);
 router.put("/:id", controller.updateTask);
 router.delete("/:id", controller.deleteTask);
+
 
 export default router;
