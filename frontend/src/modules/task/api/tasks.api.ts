@@ -6,6 +6,7 @@ import type {
   PaginatedTasksResponse,
   Task,
   TaskMeta,
+  TaskStats,
 } from "../types";
 
 type TasksEnvelope = { tasks: Task[]; meta: TaskMeta };
@@ -19,3 +20,9 @@ export const getTasksApi = async (
   const { tasks, meta } = unwrapApiResponse(response);
   return { tasks, meta };
 };
+
+export const getTaskStatsApi = async (): Promise<TaskStats> => {
+  const response = await api.get<ApiResponse<TaskStats>>("/tasks/stats");
+  return unwrapApiResponse(response);
+};
+

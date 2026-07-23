@@ -34,4 +34,10 @@ export interface GetTasksParams {
   sortBy?: "createdAt" | "dueDate";
   sortOrder?: "asc" | "desc";
 }
-
+export interface TaskStats {
+  total: number;
+  pending: number;
+  inProgress: number;
+  completed: number;
+  overdue: number;
+}

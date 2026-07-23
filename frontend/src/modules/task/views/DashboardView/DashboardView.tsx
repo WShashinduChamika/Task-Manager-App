@@ -1,8 +1,12 @@
 import { DashboardLayout } from "@shared/ui/layouts/DashboardLayout";
 import { DashboardHeaderSection } from "./sections/DashboardHeaderSection";
+import { DashboardStatsSection } from "./sections/DashboardStatsSection";
 import { DashboardTasksSection } from "./sections/DashboardTasksSection";
+import { useTaskStats } from "../../hooks/useTasks";
 
 export const DashboardView = () => {
+  const { stats, isLoading } = useTaskStats();
+
   return (
     <DashboardLayout>
       <DashboardHeaderSection />
@@ -15,9 +19,12 @@ export const DashboardView = () => {
           </p>
         </div>
 
+        <DashboardStatsSection stats={stats} isLoading={isLoading} />
+
         <DashboardTasksSection />
       </main>
     </DashboardLayout>
   );
 };
+
 

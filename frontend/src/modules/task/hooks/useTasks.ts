@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getTasksApi } from "../api/tasks.api";
+import { getTasksApi, getTaskStatsApi } from "../api/tasks.api";
 import type { GetTasksParams } from "../types";
 
 export const useTasks = (params: GetTasksParams = {}) => {
@@ -8,10 +8,21 @@ export const useTasks = (params: GetTasksParams = {}) => {
     queryFn: () => getTasksApi({ limit: 100, ...params }),
   });
 
-  console.log(query.data);
-
   const tasks = query.data?.tasks ?? [];
   const meta = query?.data?.meta;
 
   return { ...query, tasks, meta };
 };
+
+export const useTaskStats = () => {
+  const query = useQuery({
+    queryKey: ["tasks", "stats"],
+    queryFn: () => getTaskStatsApi(),
+  });
+
+  return {
+    ...query,
+    stats: query.data,
+  };
+};
+
