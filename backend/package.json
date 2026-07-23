@@ -4,9 +4,11 @@
   "main": "server.ts",
   "scripts": {
     "dev": "tsx watch src/bin/server.ts",
+    "build": "tsc",
     "start": "tsx src/bin/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+
   "keywords": [],
   "author": "",
   "license": "ISC",
