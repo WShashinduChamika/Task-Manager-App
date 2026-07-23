@@ -1,8 +1,8 @@
 /** Strongly typed route path constants — import these instead of hardcoding strings */
 export const ROUTES = {
-  LOGIN: "/login",
+  LOGIN: "/",
   REGISTER: "/register",
-  DASHBOARD: "/",
+  DASHBOARD: "/dashboard",
 } as const;
 
 export type RouteKey = keyof typeof ROUTES;

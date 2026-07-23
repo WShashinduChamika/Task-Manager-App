@@ -1,9 +1,16 @@
+import { useNavigate } from "react-router-dom";
 import { CheckSquare, LogOut } from "lucide-react";
 import { useAuth } from "@modules/auth/hooks/useAuth";
 
 export const DashboardHeaderSection = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const userName = user.value?.name ?? "User";
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
     <header className="dashboard-header">
@@ -21,7 +28,7 @@ export const DashboardHeaderSection = () => {
         <button
           id="dashboard-logout-btn"
           className="dashboard-logout-btn"
-          onClick={logout}
+          onClick={handleLogout}
           aria-label="Logout"
         >
           <LogOut size={15} />
@@ -31,3 +38,4 @@ export const DashboardHeaderSection = () => {
     </header>
   );
 };
+
