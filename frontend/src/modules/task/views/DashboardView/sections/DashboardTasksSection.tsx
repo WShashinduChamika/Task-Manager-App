@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Search, AlertCircle, ArrowUpDown, Plus, Pencil, Trash2 } from "lucide-react";
+import { Search, AlertCircle, ArrowUpDown, Plus, Pencil, Trash2, Eye } from "lucide-react";
 import { useTasks } from "../../../hooks/useTasks";
 import { CreateTaskModal } from "../components/CreateTaskModal";
 import { EditTaskModal } from "../components/EditTaskModal";
 import { DeleteConfirmModal } from "../components/DeleteConfirmModal";
+import { TaskDetailsModal } from "../components/TaskDetailsModal";
 import type { Task, TaskStatus } from "../../../types";
 
 type FilterTab = "ALL" | TaskStatus;
@@ -82,6 +83,7 @@ export const DashboardTasksSection = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [deletingTask, setDeletingTask] = useState<Task | null>(null);
+  const [viewingTask, setViewingTask] = useState<Task | null>(null);
 
   const sortParams = getSortParams(sortOption);
   const { tasks, isLoading, isError } = useTasks({
@@ -133,6 +135,13 @@ export const DashboardTasksSection = () => {
         task={deletingTask}
         isOpen={!!deletingTask}
         onClose={() => setDeletingTask(null)}
+      />
+
+      <TaskDetailsModal
+        task={viewingTask}
+        isOpen={!!viewingTask}
+        onClose={() => setViewingTask(null)}
+        onEdit={(task) => setEditingTask(task)}
       />
 
       <div className="tasks-controls">
@@ -224,7 +233,11 @@ export const DashboardTasksSection = () => {
                   aria-label={`${PRIORITY_LABELS[task.priority]} priority`}
                 />
 
-                <div className="task-info">
+                <div
+                  className="task-info task-info--clickable"
+                  onClick={() => setViewingTask(task)}
+                  title="Click to view details"
+                >
                   <span className="task-title">{task.title}</span>
                   {task.description && (
                     <span className="task-description">{task.description}</span>
@@ -261,6 +274,15 @@ export const DashboardTasksSection = () => {
                   <button
                     type="button"
                     className="task-action-btn"
+                    onClick={() => setViewingTask(task)}
+                    title="View task details"
+                    aria-label={`View task details: ${task.title}`}
+                  >
+                    <Eye size={15} />
+                  </button>
+                  <button
+                    type="button"
+                    className="task-action-btn"
                     onClick={() => setEditingTask(task)}
                     title="Edit task"
                     aria-label={`Edit task: ${task.title}`}
@@ -285,5 +307,6 @@ export const DashboardTasksSection = () => {
     </section>
   );
 };
+
 
 
