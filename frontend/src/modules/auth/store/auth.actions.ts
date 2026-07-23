@@ -1,5 +1,6 @@
 import { toast } from "sonner";
 import { getApiErrorMessage } from "@core/api/response";
+import { queryClient } from "@core/providers/AppProviders";
 import {
   authLoadingStore,
   authErrorStore,
@@ -25,6 +26,7 @@ export const loginAction = async (dto: LoginDto): Promise<boolean> => {
   try {
     const { accessToken, refreshToken, user } = await loginApi(dto);
 
+    queryClient.clear();
     setAuthTokens({ accessToken, refreshToken });
     setAuthUser(user);
 
@@ -56,6 +58,7 @@ export const registerAction = async (dto: RegisterDto): Promise<boolean> => {
       password: dto.password,
     });
 
+    queryClient.clear();
     setAuthTokens({ accessToken, refreshToken });
     setAuthUser(user);
 
@@ -83,6 +86,7 @@ export const logoutAction = (): void => {
   clearAuthTokens();
   clearAuthUser();
   globalAuthUserStore.value = null;
+  queryClient.clear();
   toast.info("Logged out successfully.");
 };
 
