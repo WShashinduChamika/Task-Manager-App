@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { LoginView, RegisterView } from "@modules/auth";
+import { DashboardView } from "@modules/task";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { ROUTES } from "./routes";
 
@@ -23,13 +24,7 @@ const router = createBrowserRouter([
     path: ROUTES.DASHBOARD,
     element: (
       <ProtectedRoute>
-        {/* Placeholder — replace with <MainLayout /> + task views */}
-        <div className="flex min-h-screen items-center justify-center bg-background">
-          <div className="text-center space-y-2">
-            <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
-            <p className="text-muted-foreground">Task views will load here.</p>
-          </div>
-        </div>
+        <DashboardView />
       </ProtectedRoute>
     ),
   },

@@ -38,8 +38,10 @@ export const getTasks = async (
     const result = await service.getTasks(req.user.userId, query);
     res.status(200).json({
       success: true,
-      data: result.tasks,
-      meta: result.meta,
+      data: {
+        tasks: result.tasks,
+        meta: result.meta,
+      },
     });
   } catch (error) {
     next(error);
